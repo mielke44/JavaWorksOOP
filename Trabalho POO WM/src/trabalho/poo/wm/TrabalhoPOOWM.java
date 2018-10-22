@@ -5,6 +5,7 @@
  */
 package trabalho.poo.wm;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -17,29 +18,31 @@ public class TrabalhoPOOWM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
         /*
-        codigo com GUI fica muito diferente para um trabalho simples;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUI().setVisible(true);
             }
         });
+        To be implemented
         */
+        
         Scanner s = new Scanner(System.in);
         
         ArrayList<Admin> admin = new ArrayList<>();
-        ArrayList<String> admName = new ArrayList<>();
         ArrayList<Vendedor> vend = new ArrayList<>();
-        ArrayList<String> vendName = new ArrayList<>();
         ArrayList<Cliente> client = new ArrayList<>();
-        ArrayList<String> cltName = new ArrayList<>();
         ArrayList<Fornecedor> forn = new ArrayList<>();
-        ArrayList<String> forName = new ArrayList<>();
-        ArrayList<Produto> prod = new ArrayList<>(); 
-        ArrayList<String> prodName = new ArrayList<>(); 
+        ArrayList<Produto> prod = new ArrayList<>();
         ArrayList<Venda> venda = new ArrayList<>();
         ArrayList<String> Ses = new ArrayList<>();
+        
+        
+        Cliente clt = new Cliente("clt","1","","","","","","","",1,"","1",client);
+        Fornecedor forne = new Fornecedor("forn","1","","","","","","","",1,"","",forn);
+        Produto prod0 = new Produto("prod","prod",100,10.50,forne,prod);
+        Produto prod1 = new Produto("prod1","prod1",100,1.50,forne,prod);
+        Produto prod2 = new Produto("prod2","prod2",100,100.50,forne,prod);
         
         float saldoDeb = 0;
         float saldoDin = 0;
@@ -47,7 +50,9 @@ public class TrabalhoPOOWM {
         Ses.add("unassagined");
         
         int usertype = -1;
-        int opt;
+        int opt = 0;
+        int useropt = 0;
+        
         while(true){
             while(true){//login
                 System.out.println("Bem vindo!\nDeseja:"
@@ -56,27 +61,31 @@ public class TrabalhoPOOWM {
                         + "\n(3): Entrar como cliente?"
                         + "\n(4): Entrar como fornecedor?"
                         + "\n(5): Terminar");
+                
                 opt = s.nextInt();
+                
+                if(opt>5 || opt == 0)System.out.println("Opção inválida!");
+                else{
+                    switch(opt){
 
-                switch(opt){
-
-                    case 1://(admin)
-                        usertype = Usefull.LoginAdm(usertype,admin,admName,Ses);
-                        break;
-                    case 2://(vendedor)
-                        usertype = Usefull.LoginVendor(usertype,vend, vendName,Ses);
-                        break;
-                    case 3://(cliente)
-                        usertype = Usefull.LoginClt(usertype,Ses,cltName, client);
-                        break;
-                    case 4://(fornecedor)
-                        usertype = Usefull.LoginForn(usertype,Ses, forn, forName);
-                        break;
-                    case 5:
-                        break;
+                        case 1://(admin)
+                            usertype = AdminController.LoginAdm(usertype,admin,Ses);
+                            break;
+                        case 2://(vendedor)
+                            usertype = VendController.LoginVendor(usertype,vend,Ses);
+                            break;
+                        case 3://(cliente)
+                            usertype = ClientController.LoginClt(usertype,Ses, client);
+                            break;
+                        case 4://(fornecedor)
+                            usertype = FornController.LoginForn(usertype,Ses, forn);
+                            break;
+                        case 5:
+                            break;
+                    }
+                    if(opt==5)break;
+                    if(usertype != -1)break;
                 }
-                if(opt==5)break;
-                if(usertype != -1)break;
             }
             while(true){//utilidades
                 if(opt==5){
@@ -85,29 +94,35 @@ public class TrabalhoPOOWM {
                 int opt2 = Usefull.actionPicker(usertype);
                 switch(opt2){
                     case 1:
-                        System.out.println("Qual tipo de registro deseja cadastrar?"
-                                + "\n(1) Admin"
-                                + "\n(2) Vendedor"
+                        if(usertype == 0){
+                            System.out.println("Qual tipo de registro deseja cadastrar?"
                                 + "\n(3) Cliente"
-                                + "\n(4) Fornecedor"
-                                + "\n(5) Produto"
                                 + "\n(6) Voltar");
-                        int useropt = s.nextInt();
+                        }else{
+                            System.out.println("Qual tipo de registro deseja cadastrar?"
+                                    + "\n(1) Admin"
+                                    + "\n(2) Vendedor"
+                                    + "\n(3) Cliente"
+                                    + "\n(4) Fornecedor"
+                                    + "\n(5) Produto"
+                                    + "\n(6) Voltar");
+                        }
+                        useropt = s.nextInt();
                         switch(useropt){
                             case 1:
-                                Usefull.cadAdm(admin, admName);
+                                AdminController.cadAdm(admin);
                                 break;
                             case 2:
-                                Usefull.cadVend(vend, vendName);
+                                VendController.cadVend(vend);
                                 break;
                             case 3:
-                                Usefull.cadClt(client, cltName);
+                                ClientController.cadClt(client);
                                 break;
                             case 4:
-                                Usefull.cadForn(forn, forName);
+                                FornController.cadForn(forn);
                                 break;
                             case 5:
-                                Usefull.cadProd(prod, prodName, forName, forn);
+                                ProdController.cadProd(prod,forn);
                                 break;
                             case 6:
                                 break;
@@ -125,48 +140,59 @@ public class TrabalhoPOOWM {
                         useropt = s.nextInt();
                         switch(useropt){
                             case 1:
-                                Usefull.erase(admin, admName, usertype, useropt);
+                                AdminController.eraseAdm(admin, usertype, useropt);
                                 break;
                             case 2:
-                                Usefull.erase(vend, vendName, usertype, useropt);
+                                VendController.eraseVend(vend, usertype, useropt);
                                 break;
                             case 3:
-                                Usefull.erase(client, cltName, usertype, useropt);
+                                ClientController.eraseClt(client, usertype, useropt);
                                 break;
                             case 4:
-                                Usefull.erase(forn, forName, usertype, useropt);
+                                FornController.eraseForn(forn, usertype, useropt);
                                 break;
                             case 5:
-                                Usefull.erase(prod, prodName, usertype, useropt);
+                                ProdController.eraseProd(prod, usertype, useropt);
                                 break;
                             case 6:
                                 break;
                         }
                         break;
                     case 3:
-                        System.out.println("Qual tipo de registro deseja editar?"
-                                + "\n(1) Admin"
+                        
+                        if(usertype==2|| usertype==1){
+                            System.out.println("Qual tipo de registro deseja editar?");
+                            System.out.println("\n(1) Admin"
                                 + "\n(2) Vendedor"
                                 + "\n(3) Cliente"
                                 + "\n(4) Fornecedor"
                                 + "\n(5) Produto"
                                 + "\n(6) Voltar");
-                        useropt = s.nextInt();
+                            useropt = s.nextInt();
+                        }else if(usertype == 0){
+                            useropt = 3;
+                        }else if(usertype == 3){
+                            System.out.println("Qual tipo de registro deseja editar?");
+                            System.out.println("\n(4) Fornecedor"
+                                + "\n(5) Produto"
+                                + "\n(6) Voltar");
+                            useropt = s.nextInt();
+                        }
                         switch(useropt){
                             case 1:
-                                Usefull.editAdmin(admin, admName,usertype);
+                                AdminController.editAdmin(admin,usertype);
                                 break;
                             case 2:
-                                Usefull.editVend(vend, vendName,usertype);
+                                VendController.editVend(vend,usertype);
                                 break;
                             case 3:
-                                Usefull.editClt(client, cltName,usertype);
+                                ClientController.editClt(client,Ses,usertype);
                                 break;
                             case 4:
-                                Usefull.editForn(forn, forName,usertype);
+                                FornController.editForn(forn,Ses,usertype);
                                 break;
                             case 5:
-                                Usefull.editProd(prod, prodName,usertype, forn,forName);
+                                ProdController.editProd(prod,usertype,forn);
                                 break;
                             case 6:
                                 break;
@@ -174,23 +200,25 @@ public class TrabalhoPOOWM {
                         break;
                     case 4:
                         if(prod.isEmpty()){
-                            System.out.println("Para registrar uma conta, deve antes registrar os produtos!");
+                            System.out.println("Para registrar uma compra, deve antes registrar os produtos!");
                             break;
                         }
-                        Usefull.venda(cltName, client, prodName,prod , venda, saldoDeb, saldoDin);
+                        VendaController.venda(client,prod , venda, saldoDeb, saldoDin, usertype);
                         break;
                     case 5:
-                        Usefull.outVenda(venda);
-                    case 6: Usefull.returnSession(Ses);
-                    break;
+                        VendaController.outVenda(venda);
+                        break;
+                    case 6: 
+                        Usefull.returnSession(Ses);
+                        break;
 
                     case 7:
-                        System.out.println("Saldo total do dia:"+(saldoDin+saldoDeb)+"\nSaldo de dinheiro físico:"+saldoDin+""
-                                + "\nSaldo de débito:"+saldoDeb);
+                        VendaController.fechamDia(venda);
+                        break;
                     case 8: break;   
                 }    
                 if(opt2 == 8){
-                    System.out.println("Sessão finalizada!");
+                    Usefull.logoff(Ses);
                     break;
                 }
             }
@@ -201,4 +229,4 @@ public class TrabalhoPOOWM {
         }
     }
 }
-//Implementar controladores
+
