@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author wilsonmielke
  */
-public class Vendedor{
+public class Vendedor implements VendController{
     protected String nome;
     protected String sobrenome;
     protected String dataNasc;
@@ -20,20 +20,26 @@ public class Vendedor{
     protected String estado;
     protected String pais;
     protected String endereco;
+    protected int numero;
     protected String criado_em;
     private String login;
     private String senha;
     
-    public Vendedor(String nome, String phone,String cidade,String criado_em, String login, 
-            String senha, ArrayList acc, ArrayList accName){
+    public Vendedor(String nome,String sn,String bd, String phone,String cpf,String cidade,String es
+            ,String pa,String end, int num,String criado_em, String login,String senha, ArrayList acc){
         this.nome = nome;
+        this.sobrenome =sn;
+        this.CPF = cpf;
+        this.estado =es;
+        this.pais = pa;
+        this.endereco = end;
+        this.numero = num;
         this.criado_em = criado_em;
         this.phone = phone;
         this.cidade = cidade;
         this.login = login;
         this.senha = senha;
         acc.add(this);
-        accName.add(this.getNome());
     }
     
     public String getNome(){
@@ -109,9 +115,33 @@ public class Vendedor{
     protected void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
     
-    public boolean compare(String pass){
+    
+    
+    public boolean Auth(String pass){
         return this.senha.equals(pass);
+    }
+    
+    public void changePass(){
+        System.out.println("Entre com a senha atual:");
+        String t = s.next();
+        if(Auth(t)){
+            System.out.println("Senha atual correta!\nEntre com a nova senha!");
+            t = s.next();
+            this.setSenha(t);
+        }else{
+            System.out.println("Senha atual incorreta!");
+            changePass();
+        }
+        
     }
 }
 

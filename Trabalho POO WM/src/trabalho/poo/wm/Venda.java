@@ -5,20 +5,18 @@
  */
 package trabalho.poo.wm;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  *
  * @author wilsonmielke
  */
-public class Venda {
-    //cliente (Cliente); item (arrayList<Produto e qtde>); tipoPagamento (crédito, débito ou dinheiro);
+public class Venda implements VendaController{
     
     protected Cliente client;
     protected ArrayList item;
     protected String pgto;
-    protected Float valor;
-    public Venda(Cliente client, ArrayList item, String pgto,Float valor, ArrayList vendas) {
+    protected double valor;
+    public Venda(Cliente client, ArrayList item, String pgto,double valor, ArrayList vendas) {
         this.client = client;
         this.item = item;
         this.pgto = pgto;
@@ -50,11 +48,11 @@ public class Venda {
         this.pgto = pgto;
     }
 
-    public Float getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void setValor(Float valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
     

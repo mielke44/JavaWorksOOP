@@ -5,12 +5,14 @@
  */
 package trabalho.poo.wm;
 import java.util.ArrayList;
+import static trabalho.poo.wm.Usefull.s;
 
 /**
  *
  * @author wilsonmielke
  */
-public class Cliente{
+public class Cliente implements ClientController{
+    
     protected String Nome; 
     protected String sobrenome; 
     protected String dataNascimento; 
@@ -22,17 +24,23 @@ public class Cliente{
     protected String endereço; 
     protected int numero; 
     protected String dataCadastro;
+    private String senha;
 
-    public Cliente(String Nome, String telefone, String CPF, String cidade, 
-            String endereço, String dataCadastro, ArrayList acc, ArrayList accName) {
+    public Cliente(String Nome,String sobrenome,String bd, String telefone, String CPF, String cid, String es, String pa,
+            String endereço, int num, String dataCadastro, String senha, ArrayList acc) {
         this.Nome = Nome;
         this.telefone = telefone;
         this.CPF = CPF;
-        this.cidade = cidade;
+        this.cidade = cid;
+        this.sobrenome = sobrenome;
+        this.dataNascimento = bd;
+        this.estado = es;
+        this.pais = pa;
+        this.numero = num;
         this.endereço = endereço;
         this.dataCadastro = dataCadastro;
+        this.senha = senha;
         acc.add(this);
-        accName.add(this.getNome());
     }
 
     
@@ -127,7 +135,31 @@ public class Cliente{
         this.dataCadastro = dataCadastro;
     }
     
-    public boolean compare(String cpf){
-        return this.CPF.equals(cpf);
+    public boolean compare(String senha){
+        return this.getSenha().equals(senha);
     }
+    
+    public void changePass(){
+        System.out.println("Entre com a senha atual:");
+        String t = s.next();
+        if(compare(t)){
+            System.out.println("Senha atual correta!\nEntre com a nova senha!");
+            t = s.next();
+            this.setSenha(t);
+        }else{
+            System.out.println("Senha atual incorreta!");
+            changePass();
+        }
+        
+    }
+
+    private String getSenha() {
+        return senha;
+    }
+
+    private void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
+    
 }

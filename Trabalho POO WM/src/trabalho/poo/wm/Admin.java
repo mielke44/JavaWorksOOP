@@ -5,25 +5,31 @@
  */
 package trabalho.poo.wm;
 import java.util.ArrayList;
+import static trabalho.poo.wm.Usefull.s;
 
 /**
  *
  * @author wilsonmielke
  */
-public class Admin{
+public class Admin implements AdminController{
     
-    private String nome;
-    private String user;
-    //user sempre igual ao nome do objeto!
-    private String password;
+    protected String nome;
+    protected String user;
+    protected String password;
     
-
-    Admin(String name, String senha, ArrayList<Admin> acc, ArrayList<String> accName) {
+    Admin(String name, String senha, ArrayList<Admin> acc) {
         this.user = name;
         this.password = senha;
         this.nome = name;
         acc.add(this);
-        accName.add(this.getNome());
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getUser() {
@@ -34,24 +40,29 @@ public class Admin{
         this.user = user;
     }
 
-    protected String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    protected void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
     
-    public boolean compare(String pass){
+    public boolean Auth(String pass){
         return this.password.equals(pass);
     }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
     
+    public void changePass(){
+        System.out.println("Entre com a senha atual:");
+        String t = s.next();
+        if(Auth(t)){
+            System.out.println("Senha atual correta!\nEntre com a nova senha!");
+            t = s.next();
+            this.setPassword(t);
+        }else{
+            System.out.println("Senha atual incorreta!");
+            changePass();
+        }
+        
+    }
 }

@@ -5,6 +5,7 @@
  */
 package trabalho.poo.wm;
 import java.util.ArrayList;
+import static trabalho.poo.wm.Usefull.s;
 
 /**
  *
@@ -22,17 +23,24 @@ public class Fornecedor{
     protected String endereço;
     protected int numero; 
     protected String dataCadastro;
+    private String senha;
 
-    public Fornecedor(String NomeFantasia, String CNPJ, String email, String telefone, String endereço, String dataCadastro
-            ,ArrayList acc, ArrayList accName) {
-        this.Nome = NomeFantasia;
+    public Fornecedor(String Nome,String RS, String CNPJ, String email, String telefone, String cid, String estado, String pais, String endereço, int num,String dataCadastro
+            ,String senha,ArrayList acc) {
+        
+        this.Nome = Nome;
+        this.RazaoSocial = RS;
+        this.cidade = cid;
         this.CNPJ = CNPJ;
         this.email = email;
         this.telefone = telefone;
+        this.estado = estado;
+        this.pais = pais;
+        this.numero = num;
         this.endereço = endereço;
         this.dataCadastro = dataCadastro;
+        this.senha = senha;
         acc.add(this);
-        accName.add(this.getNome());
     }
     
     
@@ -125,8 +133,30 @@ public class Fornecedor{
         this.dataCadastro = dataCadastro;
     }
     
-    public boolean compare(String cnpj){
-        return this.CNPJ.equals(cnpj);
+    public boolean compare(String senha){
+        return this.senha.equals(getSenha());
+    }
+
+    private String getSenha() {
+        return senha;
+    }
+
+    private void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
+    public void changePass(){
+        System.out.println("Entre com a senha atual:");
+        String t = s.next();
+        if(compare(t)){
+            System.out.println("Senha atual correta!\nEntre com a nova senha!");
+            t = s.next();
+            this.setSenha(t);
+        }else{
+            System.out.println("Senha atual incorreta!");
+            changePass();
+        }
+        
     }
     
 }

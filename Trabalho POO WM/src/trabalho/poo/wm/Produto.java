@@ -15,17 +15,16 @@ public class Produto{
     protected String nome;
     protected String Descrição; 
     protected int quantidade; 
-    protected int preço; 
+    protected double preço; 
     protected Fornecedor Fornecedor;
 
-    public Produto(String nome,String Descrição, int quantidade, int preço, Fornecedor Fornecedor, ArrayList acc, ArrayList accName) {
+    public Produto(String nome,String Descrição, int quantidade, double preço, Fornecedor Fornecedor, ArrayList acc) {
         this.nome = nome;
         this.Descrição = Descrição;
         this.quantidade = quantidade;
         this.preço = preço;
         this.Fornecedor = Fornecedor;
         acc.add(this);
-        accName.add(this.getNome());
     }
 
     public String getDescrição() {
@@ -44,11 +43,11 @@ public class Produto{
         this.quantidade = quantidade;
     }
 
-    public int getPreço() {
+    public double getPreço() {
         return preço;
     }
 
-    public void setPreço(int preço) {
+    public void setPreço(double preço) {
         this.preço = preço;
     }
 
